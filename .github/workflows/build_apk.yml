@@ -25,7 +25,8 @@ jobs:
         run: flutter pub get
 
       - name: Run unit & widget tests
-        run: flutter test
+        timeout-minutes: 5
+        run: flutter test --reporter expanded
 
       - name: Build Android Release APK
         run: flutter build apk --release

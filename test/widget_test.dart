@@ -19,20 +19,23 @@ void main() {
     );
     final prefs = PreferencesService();
     final controller = FxController(repository: repo, preferences: prefs);
-    await controller.initialize();
+    await tester.runAsync(() => controller.initialize());
 
     await tester.pumpWidget(GlobalFxTrackerApp(controller: controller));
-    await tester.pumpAndSettle();
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 700));
 
     expect(find.textContaining('USD → HKD'), findsWidgets);
     expect(find.byType(NavigationBar), findsOneWidget);
 
     await tester.tap(find.text('三幣疊加'));
-    await tester.pumpAndSettle();
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 700));
     expect(find.textContaining('HKD'), findsWidgets);
 
     await tester.tap(find.text('多幣速算表'));
-    await tester.pumpAndSettle();
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
     expect(find.text('EDITING'), findsOneWidget);
   });
 }
