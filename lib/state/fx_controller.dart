@@ -295,7 +295,7 @@ class FxController extends ChangeNotifier {
   }
 
   void addQuickAmount(double delta) {
-    final newAmt = (activeAmount + delta).clamp(0.0, double.infinity);
+    final newAmt = (activeAmount + delta).clamp(0.0, double.infinity).toDouble();
     activeAmount = newAmt;
     inputDisplayString =
         newAmt % 1 == 0 ? newAmt.toInt().toString() : newAmt.toStringAsFixed(2);

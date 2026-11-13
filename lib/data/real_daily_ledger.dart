@@ -137,7 +137,7 @@ class RealDailyLedger {
     final effectiveDates = filteredDates.length >= 2
         ? filteredDates
         : _sortedDates.sublist(
-            (_sortedDates.length - scale.pointsCount).clamp(0, _sortedDates.length),
+            (_sortedDates.length - scale.pointsCount).clamp(0, _sortedDates.length).toInt(),
           );
 
     final points = <RatePoint>[];

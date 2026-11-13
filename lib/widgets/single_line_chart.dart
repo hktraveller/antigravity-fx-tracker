@@ -65,9 +65,9 @@ class _SingleLineChartState extends State<SingleLineChart>
     const leftPad = 12.0;
     const rightPad = 66.0;
     final chartW = math.max(1.0, totalWidth - leftPad - rightPad);
-    final fraction = ((localPos.dx - leftPad) / chartW).clamp(0.0, 1.0);
+    final fraction = ((localPos.dx - leftPad) / chartW).clamp(0.0, 1.0).toDouble();
     final idx =
-        (fraction * (widget.points.length - 1)).round().clamp(0, widget.points.length - 1);
+        (fraction * (widget.points.length - 1)).round().clamp(0, widget.points.length - 1).toInt();
     if (_selectedIndex != idx) {
       setState(() => _selectedIndex = idx);
     }
@@ -331,7 +331,7 @@ class _SingleChartPainter extends CustomPainter {
 
     final coords = List<Offset>.generate(points.length, (i) {
       final x = leftPad + (i / (points.length - 1)) * chartWidth;
-      final norm = ((points[i].rate - minRate) / rateDiff).clamp(0.0, 1.0);
+      final norm = ((points[i].rate - minRate) / rateDiff).clamp(0.0, 1.0).toDouble();
       final targetY = topPad + chartHeight - (norm * chartHeight);
       final currentY =
           (topPad + chartHeight) - ((topPad + chartHeight) - targetY) * progress;
@@ -375,7 +375,7 @@ class _SingleChartPainter extends CustomPainter {
     canvas.drawPath(curvePath, strokePaint);
 
     final activeIdx = selectedIndex ?? (coords.length - 1);
-    final activeCoord = coords[activeIdx.clamp(0, coords.length - 1)];
+    final activeCoord = coords[activeIdx.clamp(0, coords.length - 1).toInt()];
 
     if (selectedIndex != null) {
       _drawDashedVertical(

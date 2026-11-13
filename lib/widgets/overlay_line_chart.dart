@@ -58,8 +58,8 @@ class _OverlayLineChartState extends State<OverlayLineChart>
     if (pointCount < 2 || totalWidth <= 0) return;
     const pad = 16.0;
     final chartW = math.max(1.0, totalWidth - pad * 2);
-    final frac = ((localPos.dx - pad) / chartW).clamp(0.0, 1.0);
-    final idx = (frac * (pointCount - 1)).round().clamp(0, pointCount - 1);
+    final frac = ((localPos.dx - pad) / chartW).clamp(0.0, 1.0).toDouble();
+    final idx = (frac * (pointCount - 1)).round().clamp(0, pointCount - 1).toInt();
     if (_selectedIndex != idx) {
       setState(() => _selectedIndex = idx);
     }
@@ -80,7 +80,7 @@ class _OverlayLineChartState extends State<OverlayLineChart>
     final samplePoints = widget.overlayData.first.points;
     final pointCount = samplePoints.length;
     final activeIdx =
-        (_selectedIndex ?? (pointCount - 1)).clamp(0, math.max(0, pointCount - 1));
+        (_selectedIndex ?? (pointCount - 1)).clamp(0, math.max(0, pointCount - 1)).toInt();
     final activeDate = samplePoints.isNotEmpty
         ? '${samplePoints[activeIdx].dateLabel} ${samplePoints[activeIdx].timeLabel}'
         : '';
@@ -363,7 +363,7 @@ class _OverlayChartPainter extends CustomPainter {
 
       final coords = List<Offset>.generate(pts.length, (idx) {
         final x = hPad + (idx / (pts.length - 1)) * chartWidth;
-        final norm = ((pts[idx].rate - itemMin) / itemDiff).clamp(0.0, 1.0);
+        final norm = ((pts[idx].rate - itemMin) / itemDiff).clamp(0.0, 1.0).toDouble();
         final targetY = vPad + chartHeight - (norm * chartHeight);
         final currY =
             (vPad + chartHeight) - ((vPad + chartHeight) - targetY) * progress;
@@ -387,7 +387,7 @@ class _OverlayChartPainter extends CustomPainter {
           ..strokeCap = StrokeCap.round,
       );
 
-      final dotCoord = coords[activeIndex.clamp(0, coords.length - 1)];
+      final dotCoord = coords[activeIndex.clamp(0, coords.length - 1).toInt()];
       canvas.drawCircle(dotCoord, 4, Paint()..color = strokeColor);
       canvas.drawCircle(dotCoord, 2, Paint()..color = Colors.white);
     }
